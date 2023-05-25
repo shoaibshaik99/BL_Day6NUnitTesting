@@ -7,7 +7,7 @@ namespace BL_Day6NUnitTesting
         static void Main(string[] args)
         {
             Console.WriteLine("Enter a program number to run it:\n1.Fewest notes for given amount of currency.\n2.Day of the week" +
-                "\n3.Temperature conversion\n4.Monthly payment on the borrowed amount\n5.Numebr to Binary\n6.Swap nibbles in Binary");
+                "\n3.Temperature conversion\n4.Monthly payment on the borrowed amount\n5.Square root of a Number\n6.Number to Binary\n7.Swap nibbles in Binary");
             int option = Convert.ToInt32(Console.ReadLine());
             switch (option)
             {
@@ -45,13 +45,24 @@ namespace BL_Day6NUnitTesting
                     };
                     break;
                 case 5:
-                    {
-                        string binary = Util.NumberToBinary();
-
-                        Console.WriteLine("Binary representation of the number is {0}", binary);
-                    }
+                    Console.WriteLine("Enter a number to find it's square root");
+                    double num = Convert.ToDouble(Console.ReadLine());
+                    double sqrt = Util.Sqrt(num);
+                    Console.WriteLine("The square root of {0} is {1}", num , sqrt);
                     break;
                 case 6:
+                    {
+                        Console.WriteLine("Enter a number to see it's binary representation: ");
+                        int number = Convert.ToInt32(Console.ReadLine());
+
+                        string binary = Util.NumberToBinary(number);
+
+                        Console.WriteLine("Binary representation of the number {0} is {1}", number, binary);
+
+                        //Console.WriteLine("Binary representation of the number is {0}", binary);
+                    }
+                    break;
+                case 7:
                     Util.SwapNibbles();
                     break;
                 default:
@@ -126,6 +137,7 @@ namespace BL_Day6NUnitTesting
                     break;
             }
         }
+
         public static void MonthlyPayment(double p, double y, double r)
         {
             double noOfMonths = 12 * y;
@@ -135,27 +147,22 @@ namespace BL_Day6NUnitTesting
 
         }
 
-        public static string NumberToBinary()
+        public static double Sqrt(double c)
         {
-            Console.WriteLine("Enter a number to see it's binary representation: ");
-            int num = Convert.ToInt32 (Console.ReadLine());
+            //return Math.Sqrt(num);
+            if (c < 0) return double.NaN;
+            double epsilon = 1e-15;
+            double t = c;
+            while (Math.Abs(t - c / t) > epsilon * t)
+            {
+                t = (c / t + t) / 2.0;
+            }
+            return t;
+        }
+
+        public static string NumberToBinary(int num)
+        {
             int tempNum = num;
-            /*if (num < 0)
-            {
-                tempNum = -num;
-            }
-            string binary = "";
-            while (tempNum != 0)
-            {
-                binary = tempNum%2 + binary;
-                tempNum = tempNum/2;
-            }
-            if (num < 0)
-            {
-                binary = "-" + binary;
-            }
-            Console.WriteLine("Binary representation of the number {0} is {1}", num, binary);
-            return binary;*/
 
             /*if (num == 0)
             {
@@ -170,9 +177,25 @@ namespace BL_Day6NUnitTesting
                 binary = remainder + binary;
                 tempNum /= 2;
             }*/
-            string binary = Convert.ToString(num, 2).PadLeft(8, '0');
 
+            if (num < 0)
+            {
+                tempNum = -num;
+            }
+            string binary = "";
+            while (tempNum != 0)
+            {
+                binary = tempNum%2 + binary;
+                tempNum = tempNum/2;
+            }
+            if (num < 0)
+            {
+                binary = "-" + binary;
+            }
+            //Console.WriteLine("Binary representation of the number {0} is {1}", num, binary);
             return binary;
+
+            //string binary = Convert.ToString(num, 2).PadLeft(8, '0');
         }
 
             public static void SwapNibbles()
